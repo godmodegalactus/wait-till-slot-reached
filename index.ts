@@ -12,7 +12,7 @@ function delay(ms: number) {
 }
 
 export async function main() {
-    let connection = new Connection("https://mango.rpcpool.com/7ea66877e68a97698f654b5e7a0f");
+    let connection = new Connection("http://127.0.0.1:8899");
 
     let leader_schedule = await connection.getLeaderSchedule();
     
@@ -28,12 +28,12 @@ export async function main() {
             let next_leader_slot  = beginning_slot + value;
             console.log("next leader slot is " + next_leader_slot);
             while (next_leader_slot != undefined && (await connection.getSlot() < next_leader_slot - 100)) {
-                await delay(10 * 1000);
+                await delay(5 * 1000);
                 console.log("still waiting");
             }
 
-            exec('tcpdump -i wlan0  \
-            dst port 80 \
+            exec('tcpdump -G 50 -W 1 \
+            dst port 8009 \
             -w ' + next_leader_slot + '.pcap', (err: String, stdout: String, stderr: String) => {
                 // your callback
                 console.error(err);
