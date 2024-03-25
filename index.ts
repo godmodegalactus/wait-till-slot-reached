@@ -12,7 +12,7 @@ function delay(ms: number) {
 }
 
 export async function main() {
-    let connection = new Connection("http://127.0.0.1:8899");
+    let connection = new Connection("http://202.8.8.12:8899");
 
     let leader_schedule = await connection.getLeaderSchedule();
     
@@ -25,12 +25,13 @@ export async function main() {
         let beginning_slot = current_epoch_info.epoch * current_epoch_info.slotsInEpoch;
         let value  = next_leader_schedule_slot.find(x => beginning_slot + x > slot)
         if (value) {
-            let next_leader_slot  = beginning_slot + value;
+            console.log(beginning_slot)
+            const next_leader_slot  = beginning_slot + value;
             console.log("next leader slot is " + next_leader_slot);
             while (next_leader_slot != undefined && (await connection.getSlot() < next_leader_slot - 100)) {
-                await delay(5 * 1000);
-                console.log("still waiting");
+                await delay(1000);
             }
+            console.log("Current break slot " + await connection.getSlot());
 
             exec('tcpdump -G 50 -W 1 \
             dst port 8009 \
