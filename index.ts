@@ -28,7 +28,8 @@ export async function main() {
             console.log(beginning_slot)
             const next_leader_slot  = beginning_slot + value;
             console.log("next leader slot is " + next_leader_slot);
-            while (next_leader_slot != undefined && (await connection.getSlot() < next_leader_slot - 100)) {
+            const wait_till_slot = next_leader_slot - 100;
+            while (await connection.getSlot() < wait_till_slot) {
                 await delay(1000);
             }
             console.log("Current break slot " + await connection.getSlot());
