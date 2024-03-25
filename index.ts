@@ -42,7 +42,7 @@ export async function main() {
                 console.log(stdout);
                 console.error(stderr);
               });
-            await delay(60 * 10000);
+            await delay(60 * 1000);
         }
     }
 
