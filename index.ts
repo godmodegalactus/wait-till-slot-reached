@@ -13,10 +13,9 @@ function delay(ms: number) {
 
 export async function main() {
     let connection = new Connection("http://202.8.8.12:8899");
-
-    let leader_schedule = await connection.getLeaderSchedule();
     
     while(true) {
+        let leader_schedule = await connection.getLeaderSchedule();
         let slot = await connection.getSlot();
         console.log("current slot is : " + slot);
         let next_leader_schedule_slot = leader_schedule["B4dn3WWS95M4qNXaR5NTdkNzhzvTZVqC13E3eLrWhXLa"];
